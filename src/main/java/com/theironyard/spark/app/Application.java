@@ -1,6 +1,7 @@
 package com.theironyard.spark.app;
 
 import static spark.Spark.get;
+import static spark.Spark.before;
 import static spark.Spark.post;
 import static spark.Spark.path;
 
@@ -28,6 +29,16 @@ public class Application {
 		get("/apartments/:id", ApartmentController.details);
 		get("/login",          SessionController.newForm);
 		post("/login",         SessionController.create);
+		
+		path("/admin", () -> {
+			before("/*", (req, res) -> {
+				if (req.session().attribute("currentUser") == null) {
+					res.redirect("/login");
+				}
+			});
+			
+			get("/users", (req, res) -> "Look at all the funny people...");
+		});
 
 		path("/api", () -> {
 			get("/apartments/:id", ApartmentApiController.details);

@@ -26,19 +26,3 @@ public class HomeController {
 	};
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
