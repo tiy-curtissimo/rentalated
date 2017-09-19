@@ -1,11 +1,9 @@
 package com.theironyard.spark.app.models;
 
-public class User {
+import org.javalite.activejdbc.Model;
+import org.mindrot.jbcrypt.BCrypt;
 
-	private String email;
-	private String password;
-	private String firstName;
-	private String lastName;
+public class User extends Model {
 
 	public User() {}
 
@@ -17,28 +15,29 @@ public class User {
 	}
 
 	public String getEmail() {
-		return email;
+		return getString("email");
 	}
 	public void setEmail(String email) {
-		this.email = email;
+		set("email", email);
 	}
 	public String getPassword() {
-		return password;
+		return getString("password");
 	}
 	public void setPassword(String password) {
-		this.password = password;
+		password = BCrypt.hashpw(password, BCrypt.gensalt());
+		set("password", password);
 	}
 	public String getFirstName() {
-		return firstName;
+		return getString("first_name");
 	}
 	public void setFirstName(String firstName) {
-		this.firstName = firstName;
+		set("first_name", firstName);
 	}
 	public String getLastName() {
-		return lastName;
+		return getString("last_name");
 	}
 	public void setLastName(String lastName) {
-		this.lastName = lastName;
+		set("last_name", lastName);
 	}
 
 }

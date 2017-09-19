@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.theironyard.spark.app.models.Apartment;
+import com.theironyard.spark.app.utilities.AutoCloseDb;
 import com.theironyard.spark.app.utilities.MustacheRenderer;
 
 import spark.Request;
@@ -14,12 +15,14 @@ import spark.Route;
 public class HomeController {
 
 	public static final Route index = (Request req, Response res) -> {
-		List<Apartment> apartments = Apartment.findAll();
-		Map<String, Object> model = new HashMap<String, Object>();
-		model.put("apartments", apartments);
-		model.put("currentUser", req.session().attribute("currentUser"));
-		model.put("noUser", req.session().attribute("currentUser") == null);
-		return MustacheRenderer.getInstance().render("home/index.html", model);
+		try (AutoCloseDb db = new AutoCloseDb()) {
+			List<Apartment> apartments = Apartment.findAll();
+			Map<String, Object> model = new HashMap<String, Object>();
+			model.put("apartments", apartments);
+			model.put("currentUser", req.session().attribute("currentUser"));
+			model.put("noUser", req.session().attribute("currentUser") == null);
+			return MustacheRenderer.getInstance().render("home/index.html", model);
+		}
 	};
 
 }
