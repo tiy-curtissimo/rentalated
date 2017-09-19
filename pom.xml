@@ -2,9 +2,9 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.libertymutual.goforcode.spark</groupId>
-	<artifactId>rentals</artifactId>
+	<artifactId>rentalated</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>rentals</name>
+	<name>rentalated</name>
 	<description>This is a project to learn a microframework and other ORMs.</description>
 	<packaging>jar</packaging>
 
