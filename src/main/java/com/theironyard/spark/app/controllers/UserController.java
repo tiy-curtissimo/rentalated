@@ -17,7 +17,7 @@ import spark.Route;
 public class UserController {
 
 	public static final Route newForm = (Request req, Response res) -> {
-		return MustacheRenderer.getInstance().render("users/newForm.html", null);
+		return MustacheRenderer.getInstance().render(req, "users/newForm.html", null);
 	};
 
 	public static final Route create = (Request req, Response res) -> {

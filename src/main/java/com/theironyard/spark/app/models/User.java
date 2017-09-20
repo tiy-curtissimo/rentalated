@@ -27,7 +27,6 @@ public class User extends Model {
 	}
 
 	public void setPassword(String password) {
-		password = BCrypt.hashpw(password, BCrypt.gensalt());
 		set("password", password);
 	}
 

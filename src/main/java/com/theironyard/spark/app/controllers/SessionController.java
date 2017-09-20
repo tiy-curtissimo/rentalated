@@ -13,7 +13,7 @@ import spark.Route;
 public class SessionController {
 
 	public static final Route newForm = (Request req, Response res) -> {
-		return MustacheRenderer.getInstance().render("session/newForm.html", null);
+		return MustacheRenderer.getInstance().render(req, "session/newForm.html", null);
 	};
 
 	public static final Route create = (Request req, Response res) -> {
@@ -21,12 +21,20 @@ public class SessionController {
 		String password = req.queryParams("password");
 		try (AutoCloseableDb db = new AutoCloseableDb()) {
 			User user = User.first("email = ?", email);
+			System.out.println("User: " + user);
 			if (user != null && BCrypt.checkpw(password, user.getPassword())) {
+				System.out.println("Hey, this passed.");
 				req.session().attribute("currentUser", user);
 			}
 			res.redirect("/");
 			return "";
 		}
+	};
+
+	public static final Route destroy = (Request req, Response res) -> {
+		req.session().removeAttribute("currentUser");
+		res.redirect("/");
+		return "";
 	};
 
 }

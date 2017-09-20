@@ -1,10 +1,13 @@
 package com.theironyard.spark.app.utilities;
 
 import java.io.StringWriter;
+import java.util.HashMap;
 import java.util.Map;
 
 import com.github.mustachejava.DefaultMustacheFactory;
 import com.github.mustachejava.Mustache;
+
+import spark.Request;
 
 public class MustacheRenderer {
 
@@ -20,7 +23,13 @@ public class MustacheRenderer {
 		return instance;
 	}
 
-	public String render(String templatePath, Map<String, Object> model) {
+	public String render(Request req, String templatePath, Map<String, Object> model) {
+		if (model == null) {
+			model = new HashMap<String, Object>();
+		}
+		model.put("currentUser", req.session().attribute("currentUser"));
+		model.put("noUser", req.session().attribute("currentUser") == null);
+
 		Mustache mustache = factory.compile(templatePath);
 		StringWriter writer = new StringWriter();
 		mustache.execute(writer, model);

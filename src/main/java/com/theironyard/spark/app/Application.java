@@ -2,13 +2,13 @@ package com.theironyard.spark.app;
 
 import static spark.Spark.*;
 
-import org.javalite.activejdbc.Base;
 import org.mindrot.jbcrypt.BCrypt;
 
 import com.theironyard.spark.app.controllers.ApartmentApiController;
 import com.theironyard.spark.app.controllers.ApartmentController;
 import com.theironyard.spark.app.controllers.HomeController;
 import com.theironyard.spark.app.controllers.SessionController;
+import com.theironyard.spark.app.controllers.UserController;
 import com.theironyard.spark.app.models.Apartment;
 import com.theironyard.spark.app.models.User;
 import com.theironyard.spark.app.utilities.AutoCloseableDb;
@@ -32,6 +32,9 @@ public class Application {
 		get ("/apartments/:id", ApartmentController.details);
 		get ("/login",          SessionController.newForm);
 		post("/login",          SessionController.create);
+		post("/logout",         SessionController.destroy);
+		get ("/users/new",      UserController.newForm);
+		post("/users",          UserController.create);
 		
 		path("/api", () -> {
 			get ("/apartments/:id", ApartmentApiController.details);

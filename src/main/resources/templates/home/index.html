@@ -6,12 +6,7 @@
 </head>
 <body>
 
-  {{#noUser}}
-    <a href="/login">Login</a>
-  {{/noUser}}
-  {{#currentUser}}
-    Welcome, {{ currentUser.firstName }} ({{ currentUser.email }})
-  {{/currentUser}}
+  {{> /common/_navigation }}
 
   <h1>Apartments!</h1>
   {{#apartments}}

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+  {{> /common/_navigation.html }}
+
+  <form method="post" action="/users">
+    <input name="user[email]" type="email" required placeholder="Your email">
+    <br>
+    <input name="user[password]" type="password" required placeholder="Your password">
+    <br>
+    <input name="user[first_name]" type="text" required placeholder="Your first name">
+    <br>
+    <input name="user[last_name]" type="text" required placeholder="Your last name">
+    <br>
+    <button>Sign up</button>
+  </form>
+</body>
+</html>

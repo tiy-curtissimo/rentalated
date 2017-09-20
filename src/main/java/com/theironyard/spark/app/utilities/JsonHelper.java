@@ -4,6 +4,7 @@ import org.codehaus.jackson.map.ObjectMapper;
 import java.io.IOException;
 import java.util.Map;
 
+@SuppressWarnings("rawtypes")
 public class JsonHelper {
 	public static Map toMap(String json) {
 		ObjectMapper mapper = new ObjectMapper();

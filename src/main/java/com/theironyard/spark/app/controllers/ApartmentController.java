@@ -21,7 +21,7 @@ public class ApartmentController {
 			Apartment apartment = Apartment.findById(id);
 			Map<String, Object> model = new HashMap<String, Object>();
 			model.put("apartment", apartment);
-			return MustacheRenderer.getInstance().render("apartment/details.html", model);
+			return MustacheRenderer.getInstance().render(req, "apartment/details.html", model);
 		}
 	};
 
