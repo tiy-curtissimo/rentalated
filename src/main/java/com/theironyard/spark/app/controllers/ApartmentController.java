@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.theironyard.spark.app.models.Apartment;
-import com.theironyard.spark.app.utilities.AutoCloseDb;
+import com.theironyard.spark.app.utilities.AutoCloseableDb;
 import com.theironyard.spark.app.utilities.MustacheRenderer;
 
 import spark.Request;
@@ -17,7 +17,7 @@ public class ApartmentController {
 		String idAsString = req.params("id");
 		int id = Integer.parseInt(idAsString);
 
-		try (AutoCloseDb db = new AutoCloseDb()) {
+		try (AutoCloseableDb db = new AutoCloseableDb()) {
 			Apartment apartment = Apartment.findById(id);
 			Map<String, Object> model = new HashMap<String, Object>();
 			model.put("apartment", apartment);
