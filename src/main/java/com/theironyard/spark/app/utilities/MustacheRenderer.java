@@ -32,6 +32,7 @@ public class MustacheRenderer {
 			model = new HashMap<String, Object>();
 		}
 		model.put("currentUser", req.session().attribute("currentUser"));
+		model.put("csrf", req.session().attribute("csrf"));
 		model.put("noUser", req.session().attribute("currentUser") == null);
 
 		Mustache mustache = factory.compile(templatePath);

@@ -35,6 +35,8 @@ public class Application {
 			ApartmentsUsers.deleteAll();
 		}
 		
+		before("/*", SecurityFilters.csrf);
+		
 		get ("/", HomeController.index);
 		
 		path("/apartments", () -> {

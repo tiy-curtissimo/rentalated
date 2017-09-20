@@ -14,11 +14,13 @@
   {{#apartment.isActive}}
     <form method="post" action="/apartments/{{ apartment.id }}/deactivations">
       <button>Deactivate listing</button>
+      <input type="hidden" name="csrf" value="{{ csrf }}">
     </form>
   {{/apartment.isActive}}
   {{#isInactive}}
     <form method="post" action="/apartments/{{ apartment.id }}/activations">
       <button>Activate listing</button>
+      <input type="hidden" name="csrf" value="{{ csrf }}">
     </form>
   {{/isInactive}}
 {{/usersListing}}
