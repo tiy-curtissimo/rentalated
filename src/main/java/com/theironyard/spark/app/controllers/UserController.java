@@ -17,7 +17,7 @@ import spark.Route;
 public class UserController {
 
 	public static final Route newForm = (Request req, Response res) -> {
-		return MustacheRenderer.getInstance().render(req, "users/newForm.html", null);
+		return MustacheRenderer.getInstance().render(req, "users/newForm.html");
 	};
 
 	public static final Route create = (Request req, Response res) -> {
@@ -26,7 +26,7 @@ public class UserController {
 				.entrySet()
 				.stream()
 				.map(entry -> new AbstractMap.SimpleEntry<String, String>(entry.getKey(), entry.getValue()[0]))
-				.peek(entry -> entry.setValue(entry.getKey() == "password"
+				.peek(entry -> entry.setValue(entry.getKey().equals("password")
 								? BCrypt.hashpw(entry.getValue(), BCrypt.gensalt())
 								: entry.getValue()))
 				.collect(Collectors.toMap(entry -> entry.getKey(), entry -> entry.getValue()));

@@ -4,8 +4,9 @@
   <a href="/users/new">Sign up</a>
 {{/noUser}}
 {{#currentUser}}
-  Welcome, {{ currentUser.firstName }} ({{ currentUser.email }})
+  <a href="/apartments/listed">Your listings</a>
+  <a href="/apartments/new">Add a listing</a>
   <form method="post" action="/logout">
-    <button>Logout</button>
+    <button>Logout {{ currentUser.firstName }}</button>
   </form>
 {{/currentUser}}

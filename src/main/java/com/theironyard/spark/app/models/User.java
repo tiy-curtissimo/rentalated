@@ -1,7 +1,8 @@
 package com.theironyard.spark.app.models;
 
+import java.util.List;
+
 import org.javalite.activejdbc.Model;
-import org.mindrot.jbcrypt.BCrypt;
 
 public class User extends Model {
 
@@ -44,6 +45,10 @@ public class User extends Model {
 
 	public void setLastName(String lastName) {
 		set("last_name", lastName);
+	}
+	
+	public List<Apartment> getListings() {
+		return getAll(Apartment.class);
 	}
 
 }

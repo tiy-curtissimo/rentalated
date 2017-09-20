@@ -10,7 +10,7 @@ CREATE TABLE apartments
   address varchar(255),
   city varchar(255),
   state varchar(20),
-  zip_code varchar(10)
+  zip_code varchar(10),
+  user_id bigint not null
 );
 
-ALTER TABLE apartments OWNER TO intro;

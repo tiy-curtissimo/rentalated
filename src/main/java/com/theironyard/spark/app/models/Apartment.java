@@ -6,7 +6,7 @@ public class Apartment extends Model {
 
 	public Apartment() {}
 
-	public Apartment(int rent, int numberOfBedrooms, double numberOfBathrooms, int squareFootage, String address, String city, String state, String zipCode) {
+	public Apartment(int rent, int numberOfBedrooms, double numberOfBathrooms, int squareFootage, String address, String city, String state, String zipCode, User lister) {
 		setRent(rent);
 		setNumberOfBedrooms(numberOfBedrooms);
 		setNumberOfBathrooms(numberOfBathrooms);
@@ -15,6 +15,7 @@ public class Apartment extends Model {
 		setCity(city);
 		setState(state);
 		setZipCode(zipCode);
+		setLister(lister);
 	}
 
 	public int getNumberOfBedrooms() {
@@ -79,6 +80,15 @@ public class Apartment extends Model {
 
 	public void setRent(int rent) {
 		set("rent", rent);
+	}
+	
+	public User getLister() {
+		return parent(User.class);
+	}
+	
+	public void setLister(User lister) {
+		lister.add(this);
+		lister.saveIt();
 	}
 
 }

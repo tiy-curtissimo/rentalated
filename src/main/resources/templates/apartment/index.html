@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Apartments O'Plenty</title>
+</head>
+<body>
+
+  {{> /common/_navigation }}
+
+  {{#apartments}}
+    <div>
+      <a href="/apartments/{{ id }}">{{ address }}</a>
+    </div>
+  {{/apartments}}
+
+</body>
+</html>

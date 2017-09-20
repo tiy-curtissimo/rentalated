@@ -22,6 +22,10 @@ public class MustacheRenderer {
 	public static MustacheRenderer getInstance() {
 		return instance;
 	}
+	
+	public String render(Request req, String templatePath) {
+		return render(req, templatePath, null);
+	}
 
 	public String render(Request req, String templatePath, Map<String, Object> model) {
 		if (model == null) {

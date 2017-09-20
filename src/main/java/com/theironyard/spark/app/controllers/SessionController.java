@@ -1,5 +1,8 @@
 package com.theironyard.spark.app.controllers;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.mindrot.jbcrypt.BCrypt;
 
 import com.theironyard.spark.app.models.User;
@@ -13,12 +16,15 @@ import spark.Route;
 public class SessionController {
 
 	public static final Route newForm = (Request req, Response res) -> {
-		return MustacheRenderer.getInstance().render(req, "session/newForm.html", null);
+		Map<String, Object> model = new HashMap<>();
+		model.put("returnPath", req.queryParams("returnPath"));
+		return MustacheRenderer.getInstance().render(req, "session/newForm.html", model);
 	};
 
 	public static final Route create = (Request req, Response res) -> {
 		String email = req.queryParams("email");
 		String password = req.queryParams("password");
+		String returnPath = req.queryParamOrDefault("returnPath", "/");
 		try (AutoCloseableDb db = new AutoCloseableDb()) {
 			User user = User.first("email = ?", email);
 			System.out.println("User: " + user);
@@ -26,7 +32,7 @@ public class SessionController {
 				System.out.println("Hey, this passed.");
 				req.session().attribute("currentUser", user);
 			}
-			res.redirect("/");
+			res.redirect(returnPath);
 			return "";
 		}
 	};
