@@ -16,6 +16,7 @@ public class Apartment extends Model {
 		setState(state);
 		setZipCode(zipCode);
 		setLister(lister);
+		setIsActive(true);
 	}
 
 	public int getNumberOfBedrooms() {
@@ -80,6 +81,14 @@ public class Apartment extends Model {
 
 	public void setRent(int rent) {
 		set("rent", rent);
+	}
+	
+	public boolean getIsActive() {
+		return getBoolean("is_active");
+	}
+	
+	public void setIsActive(boolean isActive) {
+		set("is_active", isActive);
 	}
 	
 	public User getLister() {

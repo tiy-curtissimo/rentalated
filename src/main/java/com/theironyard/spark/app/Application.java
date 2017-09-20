@@ -11,6 +11,7 @@ import com.theironyard.spark.app.controllers.SessionController;
 import com.theironyard.spark.app.controllers.UserController;
 import com.theironyard.spark.app.filters.SecurityFilters;
 import com.theironyard.spark.app.models.Apartment;
+import com.theironyard.spark.app.models.ApartmentsUsers;
 import com.theironyard.spark.app.models.User;
 import com.theironyard.spark.app.utilities.AutoCloseableDb;
 
@@ -30,20 +31,35 @@ public class Application {
 			Apartment.deleteAll();
 			new Apartment(6500, 10, 12.5, 2850, "123 Cowboy Way", "Houston", "TX", "77006", curtis).saveIt();
 			new Apartment(6500, 3, 4.5, 850, "123 Main St.", "San Francisco", "CA", "95125", curtis).saveIt();
+			
+			ApartmentsUsers.deleteAll();
 		}
 		
 		get ("/", HomeController.index);
 		
-		before("/apartments/new", SecurityFilters.authenticated("get"));
-		get   ("/apartments/new", ApartmentController.newForm);
+		path("/apartments", () -> {
+			before("/new", SecurityFilters.authenticated("get"));
+			get   ("/new", ApartmentController.newForm);
 
-		before("/apartments/listed", SecurityFilters.authenticated("get"));
-		get   ("/apartments/listed", ApartmentController.forCurrentUser);
+			before("/listed", SecurityFilters.authenticated("get"));
+			get   ("/listed", ApartmentController.forCurrentUser);
+			
+			before("",   SecurityFilters.authenticated("post"));
+			post  ("",   ApartmentController.create);
+
+			get   ("/:id", ApartmentController.details);
+			
+			before("/:id/like", SecurityFilters.authenticated("post"));
+			post  ("/:id/like", ApartmentController.like);
+			
+			before("/:id/activations", SecurityFilters.authenticated("post"));
+			post  ("/:id/activations", ApartmentController.activate);
+			
+			before("/:id/deactivations", SecurityFilters.authenticated("post"));
+			post  ("/:id/deactivations", ApartmentController.deactivate);
+		});
 		
-		before("/apartments",   SecurityFilters.authenticated("post"));
-		post  ("/apartments",   ApartmentController.create);
-
-		get ("/apartments/:id", ApartmentController.details);
+		
 		get ("/login",          SessionController.newForm);
 		post("/login",          SessionController.create);
 		post("/logout",         SessionController.destroy);

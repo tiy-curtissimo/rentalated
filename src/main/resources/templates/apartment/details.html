@@ -8,7 +8,41 @@
 
 {{> /common/_navigation }}
 
+
 <h1>Only ${{ apartment.rent }}</h1>
+{{#usersListing}}
+  {{#apartment.isActive}}
+    <form method="post" action="/apartments/{{ apartment.id }}/deactivations">
+      <button>Deactivate listing</button>
+    </form>
+  {{/apartment.isActive}}
+  {{#isInactive}}
+    <form method="post" action="/apartments/{{ apartment.id }}/activations">
+      <button>Activate listing</button>
+    </form>
+  {{/isInactive}}
+{{/usersListing}}
+<div>{{{ numberOfLikes }}} likes</div>
+{{#hasLikers}}
+  {{#usersListing}}
+    <div><b>People that have liked it</b></div>
+    {{#likers}}
+      <div>{{ lastName }}, {{ firstName }}</div>
+    {{/likers}}
+  {{/usersListing}}
+{{/hasLikers}}
+<div>
+  {{#noUser}}
+    <a href="/login?returnPath=/apartments/{{ apartment.id }}">Login to LIKE this apartment</a>
+  {{/noUser}}
+  {{#currentUser}}
+    {{#userDoesNotLikeIt}}
+      <form method="post" action="/apartments/{{ apartment.id }}/like">
+        <button>Like this apartment</button>
+      </form>
+    {{/userDoesNotLikeIt}}
+  {{/currentUser}}
+</div>
 <p>
   {{ apartment.address }}<br>
   {{ apartment.city }}, {{ apartment.state }} {{ apartment.zipCode }}

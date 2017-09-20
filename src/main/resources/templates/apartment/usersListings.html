@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Apartments O'Plenty</title>
+</head>
+<body>
+
+  {{> /common/_navigation }}
+
+  <h1>Your Listings</h1>
+
+  <h2>Active Listings</h2>
+  {{#activeListings}}
+    <div>
+      <a href="/apartments/{{ id }}">{{ address }} {{#isActive}}(active){{/isActive}}</a>
+    </div>
+  {{/activeListings}}
+
+  <h2>Inactive Listings</h2>
+  {{#inactiveListings}}
+    <div>
+      <a href="/apartments/{{ id }}">{{ address }} {{#isActive}}(active){{/isActive}}</a>
+    </div>
+  {{/inactiveListings}}
+
+</body>
+</html>
