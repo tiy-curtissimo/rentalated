@@ -14,6 +14,9 @@ import com.theironyard.spark.app.models.Apartment;
 import com.theironyard.spark.app.models.ApartmentsUsers;
 import com.theironyard.spark.app.models.User;
 import com.theironyard.spark.app.utilities.AutoCloseableDb;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.Statement;
 
 public class Application {
 
@@ -24,6 +27,47 @@ public class Application {
 		String encryptedPassword = BCrypt.hashpw("password", BCrypt.gensalt());
 
 		try (AutoCloseableDb db = new AutoCloseableDb()) {
+			try {
+				Class.forName("org.postgresql.Driver");
+				Connection conn = DriverManager.getConnection(db.getUrl(), db.getName(), db.getPassword());
+				Statement stmt = conn.createStatement();
+
+				String sql = "CREATE TABLE IF NOT EXISTS apartments" +
+				"(" +
+				"  id bigserial PRIMARY KEY NOT NULL," +
+				"  rent integer NOT NULL," +
+				"  number_of_bedrooms integer NOT NULL," +
+				"  number_of_bathrooms numeric(4, 2) NOT NULL," +
+				"  square_footage integer NOT NULL," +
+				"  address varchar(255)," +
+				"  city varchar(255)," +
+				"  state varchar(20)," +
+				"  zip_code varchar(10)," +
+				"  user_id bigint not null," +
+				"  is_active boolean not null default false" +
+				");" +
+				"\n" +
+				"CREATE TABLE IF NOT EXISTS users" +
+				"(" +
+				"  id bigserial PRIMARY KEY NOT NULL, " +
+				"  email varchar(255) UNIQUE NOT NULL," +
+				"  password varchar(255) NOT NULL," +
+				"  first_name varchar(255) NOT NULL," +
+				"  last_name varchar(255) NOT NULL" +
+				");" +
+				"\n" +
+				"CREATE TABLE apartments_users (" +
+				"	id BIGSERIAL PRIMARY KEY NOT NULL," +
+				"	apartment_id BIGINT," +
+				"	user_id BIGINT" +
+				");";
+
+				stmt.executeUpdate(sql);
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
+
+
 			User.deleteAll();
 			User curtis = new User("curtis@schlak", encryptedPassword, "Curtis", "Schlak");
 			curtis.saveIt();

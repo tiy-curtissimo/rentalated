@@ -6,7 +6,9 @@ import org.javalite.activejdbc.Base;
 public class AutoCloseableDb implements Closeable, AutoCloseable {
 
 	public AutoCloseableDb() {
-		System.out.println("USING URL " + getUrl());
+		System.out.println("USING URL:      " + getUrl());
+		System.out.println("USING NAME:     " + getName());
+		System.out.println("USING PASSWORD: " + getPassword());
 		Base.open("org.postgresql.Driver", getUrl(), getName(), getPassword());
 	}
 
@@ -15,7 +17,7 @@ public class AutoCloseableDb implements Closeable, AutoCloseable {
 		Base.close();
 	}
 
-	private String getUrl() {
+	public String getUrl() {
 		if (url == null) {
 			ProcessBuilder builder = new ProcessBuilder();
 			if (builder.environment().get("JDBC_DATABASE_URL") != null) {
@@ -27,7 +29,7 @@ public class AutoCloseableDb implements Closeable, AutoCloseable {
 		return url;
 	}
 
-	private String getName() {
+	public String getName() {
 		if (name == null) {
 			ProcessBuilder builder = new ProcessBuilder();
 			if (builder.environment().get("JDBC_DATABASE_USERNAME") != null) {
@@ -39,7 +41,7 @@ public class AutoCloseableDb implements Closeable, AutoCloseable {
 		return name;
 	}
 
-	private String getPassword() {
+	public String getPassword() {
 		if (password == null) {
 			ProcessBuilder builder = new ProcessBuilder();
 			if (builder.environment().get("JDBC_DATABASE_PASSWORD") != null) {
