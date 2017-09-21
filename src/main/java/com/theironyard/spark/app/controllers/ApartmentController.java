@@ -31,12 +31,12 @@ public class ApartmentController {
 					.collect(Collectors.toList());
 			boolean userLikesIt = false;
 			boolean usersListing = false;
-			
+
 			if (currentUser != null) {
 				userLikesIt = likers.stream().anyMatch(user -> user.getId().equals(currentUser.getId()));
 				usersListing = currentUser.getId().equals(apartment.parent(User.class).getId());
 			}
-			
+
 			Map<String, Object> model = new HashMap<String, Object>();
 			model.put("apartment", apartment);
 			model.put("numberOfLikes", likers.size());
@@ -49,15 +49,15 @@ public class ApartmentController {
 			return MustacheRenderer.getInstance().render(req, "apartment/details.html", model);
 		}
 	};
-	
+
 	public static final Route newForm = (Request req, Response res) -> {
 		return MustacheRenderer.getInstance().render(req, "apartment/newForm.html");
 	};
-	
+
 	public static final Route create = (Request req, Response res) -> {
 		try (AutoCloseableDb db = new AutoCloseableDb()) {
 			System.out.println(req.queryMap("apartment").get("number_of_bathrooms"));
-			Map<String, Object> map = req.queryMap("apartment")
+			Map<String, Object> map = req.queryMap()
 					.toMap()
 					.entrySet()
 					.stream()
@@ -69,9 +69,10 @@ public class ApartmentController {
 					.collect(Collectors.toMap(entry -> entry.getKey(), entry -> entry.getValue()));
 			Apartment apartment = new Apartment();
 			apartment.fromMap(map);
+			apartment.setIsActive(true);
 			User currentUser = req.session().attribute("currentUser");
 			currentUser.add(apartment);
-			res.redirect("/apartments/listed");
+			res.redirect("/apartments/mine");
 			return "";
 		}
 	};
@@ -111,10 +112,10 @@ public class ApartmentController {
 				apartment.saveIt();
 			}
 		}
-		res.redirect("/apartments/listed");
+		res.redirect("/apartments/mine");
 		return "";
 	};
-	
+
 	public static final Route deactivate = (Request req, Response res) -> {
 		User currentUser = req.session().attribute("currentUser");
 		int apartmentId = Integer.parseInt(req.params("id"));
@@ -126,7 +127,7 @@ public class ApartmentController {
 				apartment.saveIt();
 			}
 		}
-		res.redirect("/apartments/listed");
+		res.redirect("/apartments/mine");
 		return "";
 	};
 

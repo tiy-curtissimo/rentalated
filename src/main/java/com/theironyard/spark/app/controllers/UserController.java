@@ -21,7 +21,7 @@ public class UserController {
 	};
 
 	public static final Route create = (Request req, Response res) -> {
-		Map<String, String> map = req.queryMap("user")
+		Map<String, String> map = req.queryMap()
 				.toMap()
 				.entrySet()
 				.stream()

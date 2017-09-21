@@ -8,21 +8,21 @@
   {{> /common/_navigation.html }}
 
   <form method="post" action="/apartments">
-    <input name="apartment[rent]" type="number" required placeholder="Monthly rent">
+    <input name="rent" type="number" required placeholder="Monthly rent">
     <br>
-    <input name="apartment[number_of_bedrooms]" type="number" required placeholder="Number of bedrooms">
+    <input name="number_of_bedrooms" type="number" required placeholder="Number of bedrooms">
     <br>
-    <input name="apartment[number_of_bathrooms]" step="0.5" type="number" required placeholder="Number of bathrooms">
+    <input name="number_of_bathrooms" step="0.5" type="number" required placeholder="Number of bathrooms">
     <br>
-    <input name="apartment[square_footage]" type="number" required placeholder="Square footage">
+    <input name="square_footage" type="number" required placeholder="Square footage">
     <br>
-    <input name="apartment[address]" type="text" required placeholder="Street address">
+    <input name="address" type="text" required placeholder="Street address">
     <br>
-    <input name="apartment[city]" type="text" required placeholder="City">
+    <input name="city" type="text" required placeholder="City">
     <br>
-    <input name="apartment[state]" type="text" required placeholder="State">
+    <input name="state" type="text" required placeholder="State">
     <br>
-    <input name="apartment[zip_code]" type="text" required placeholder="ZIP code">
+    <input name="zip_code" type="text" required placeholder="ZIP code">
     <br>
     <button>Add listing</button>
     <input type="hidden" name="csrf" value="{{ csrf }}">
