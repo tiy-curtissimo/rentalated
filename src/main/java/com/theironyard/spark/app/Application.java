@@ -19,6 +19,8 @@ public class Application {
 
 	public static void main(String[] args) {
 
+		port(gtHerokuAssignedPort());
+
 		String encryptedPassword = BCrypt.hashpw("password", BCrypt.gensalt());
 
 		try (AutoCloseableDb db = new AutoCloseableDb()) {
@@ -73,6 +75,14 @@ public class Application {
 			get ("/apartments/:id", ApartmentApiController.details);
 			post("/apartments", ApartmentApiController.create);
 		});
+	}
+
+	private static int gtHerokuAssignedPort() {
+		ProcessBuilder builder = new ProcessBuilder();
+		if (builder.environment().get("PORT") != null) {
+			return Integer.parseInt(builder.environment().get("PORT"));
+		}
+		return 4567;
 	}
 
 }
