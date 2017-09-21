@@ -18,8 +18,8 @@ public class AutoCloseableDb implements Closeable, AutoCloseable {
 	private String getUrl() {
 		if (url == null) {
 			ProcessBuilder builder = new ProcessBuilder();
-			if (builder.environment().get("DATABASE_URL") != null) {
-				url = builder.environment().get("DATABASE_URL");
+			if (builder.environment().get("JDBC_DATABASE_URL") != null) {
+				url = builder.environment().get("JDBC_DATABASE_URL");
 			} else {
 				url = "jdbc:postgresql://localhost:5432/intro";
 			}
@@ -30,7 +30,9 @@ public class AutoCloseableDb implements Closeable, AutoCloseable {
 	private String getName() {
 		if (name == null) {
 			ProcessBuilder builder = new ProcessBuilder();
-			if (builder.environment().get("DATABASE_URL") == null) {
+			if (builder.environment().get("JDBC_DATABASE_USERNAME") != null) {
+				name = builder.environment().get("JDBC_DATABASE_USERNAME");
+			} else {
 				name = "intro";
 			}
 		}
@@ -40,7 +42,9 @@ public class AutoCloseableDb implements Closeable, AutoCloseable {
 	private String getPassword() {
 		if (password == null) {
 			ProcessBuilder builder = new ProcessBuilder();
-			if (builder.environment().get("DATABASE_URL") == null) {
+			if (builder.environment().get("JDBC_DATABASE_PASSWORD") != null) {
+				password = builder.environment().get("JDBC_DATABASE_PASSWORD");
+			} else {
 				password = "intro";
 			}
 		}
