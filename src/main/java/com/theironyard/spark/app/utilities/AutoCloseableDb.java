@@ -19,7 +19,7 @@ public class AutoCloseableDb implements Closeable, AutoCloseable {
 		if (url == null) {
 			ProcessBuilder builder = new ProcessBuilder();
 			if (builder.environment().get("DATABASE_URL") != null) {
-				url = "jdbc:" + builder.environment().get("DATABASE_URL");
+				url = builder.environment().get("DATABASE_URL");
 			} else {
 				url = "jdbc:postgresql://localhost:5432/intro";
 			}

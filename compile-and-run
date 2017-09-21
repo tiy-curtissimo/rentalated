@@ -1,0 +1,2 @@
+pkill java
+mvn compile && java -cp "target/classes:target/*" com.theironyard.spark.app.Application &

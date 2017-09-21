@@ -1,0 +1,1 @@
+fswatch -o src/main/ | xargs -n 1 -I {} ./compile-and-run
