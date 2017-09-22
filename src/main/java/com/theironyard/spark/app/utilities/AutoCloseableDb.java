@@ -6,9 +6,6 @@ import org.javalite.activejdbc.Base;
 public class AutoCloseableDb implements Closeable, AutoCloseable {
 
 	public AutoCloseableDb() {
-		System.out.println("USING URL:      " + getUrl());
-		System.out.println("USING NAME:     " + getName());
-		System.out.println("USING PASSWORD: " + getPassword());
 		Base.open("org.postgresql.Driver", getUrl(), getName(), getPassword());
 	}
 
