@@ -310,6 +310,7 @@ test('Can toggle state of listing from active to deactive', async t => {
     .navigateTo('/apartments/mine')
     .click(Selector('a').withText(prop1.address))
     .expect(Selector('button').withText('listing').exists).ok('Could not find a deactivation button for the property')
+    .expect(Selector('button').withText('listing').filter(node => node.innerHTML.substring(0, 1) === 'D').exists).ok('Could not find a deactivation button for the property')
     .click(Selector('button').withText('listing'))
     .navigateTo('/')
     .expect(Selector('a').withText(prop1.address).exists).notOk('The property is still listed on the home page though it should be deactivated');
@@ -320,6 +321,7 @@ test('Can toggle state of listing from deactive to active', async t => {
     .navigateTo('/apartments/mine')
     .click(Selector('a').withText(prop1.address))
     .expect(Selector('button').withText('listing').exists).ok('Could not find an activation button for the property')
+    .expect(Selector('button').withText('listing').filter(node => node.innerHTML.substring(0, 1) === 'A').exists).ok('Could not find a deactivation button for the property')
     .click(Selector('button').withText('listing'))
     .navigateTo('/')
     .expect(Selector('a').withText(prop1.address).exists).ok('The property is still listed on the home page though it should be deactivated');
