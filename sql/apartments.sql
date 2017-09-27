@@ -11,7 +11,7 @@ CREATE TABLE apartments
   city varchar(255),
   state varchar(20),
   zip_code varchar(10),
-  user_id bigint not null,
+  user_id bigint,
   is_active boolean not null default false
 );
 
