@@ -7,6 +7,7 @@ import org.mindrot.jbcrypt.BCrypt;
 import com.theironyard.spark.app.controllers.ApartmentApiController;
 import com.theironyard.spark.app.controllers.ApartmentController;
 import com.theironyard.spark.app.controllers.HomeController;
+import com.theironyard.spark.app.controllers.SessionApiController;
 import com.theironyard.spark.app.controllers.SessionController;
 import com.theironyard.spark.app.controllers.UserController;
 import com.theironyard.spark.app.filters.SecurityFilters;
@@ -32,35 +33,16 @@ public class Application {
 			Connection conn = DriverManager.getConnection(db.getUrl(), db.getName(), db.getPassword());
 			Statement stmt = conn.createStatement();
 
-			String sql = "CREATE TABLE IF NOT EXISTS apartments" +
-			"(" +
-			"  id bigserial PRIMARY KEY NOT NULL," +
-			"  rent integer NOT NULL," +
-			"  number_of_bedrooms integer NOT NULL," +
-			"  number_of_bathrooms numeric(4, 2) NOT NULL," +
-			"  square_footage integer NOT NULL," +
-			"  address varchar(255)," +
-			"  city varchar(255)," +
-			"  state varchar(20)," +
-			"  zip_code varchar(10)," +
-			"  user_id bigint not null," +
-			"  is_active boolean not null default false" +
-			");" +
-			"\n" +
-			"CREATE TABLE IF NOT EXISTS users" +
-			"(" +
-			"  id bigserial PRIMARY KEY NOT NULL, " +
-			"  email varchar(255) UNIQUE NOT NULL," +
-			"  password varchar(255) NOT NULL," +
-			"  first_name varchar(255) NOT NULL," +
-			"  last_name varchar(255) NOT NULL" +
-			");" +
-			"\n" +
-			"CREATE TABLE IF NOT EXISTS apartments_users (" +
-			"	id BIGSERIAL PRIMARY KEY NOT NULL," +
-			"	apartment_id BIGINT," +
-			"	user_id BIGINT" +
-			");";
+			String sql = "CREATE TABLE IF NOT EXISTS apartments" + "(" + "  id bigserial PRIMARY KEY NOT NULL,"
+					+ "  rent integer NOT NULL," + "  number_of_bedrooms integer NOT NULL,"
+					+ "  number_of_bathrooms numeric(4, 2) NOT NULL," + "  square_footage integer NOT NULL,"
+					+ "  address varchar(255)," + "  city varchar(255)," + "  state varchar(20)," + "  zip_code varchar(10),"
+					+ "  user_id bigint not null," + "  is_active boolean not null default false" + ");" + "\n"
+					+ "CREATE TABLE IF NOT EXISTS users" + "(" + "  id bigserial PRIMARY KEY NOT NULL, "
+					+ "  email varchar(255) UNIQUE NOT NULL," + "  password varchar(255) NOT NULL,"
+					+ "  first_name varchar(255) NOT NULL," + "  last_name varchar(255) NOT NULL" + ");" + "\n"
+					+ "CREATE TABLE IF NOT EXISTS apartments_users (" + "	id BIGSERIAL PRIMARY KEY NOT NULL,"
+					+ "	apartment_id BIGINT," + "	user_id BIGINT" + ");";
 
 			stmt.executeUpdate(sql);
 
@@ -76,47 +58,47 @@ public class Application {
 
 			ApartmentsUsers.deleteAll();
 		}
-		
-		enableCORS("*", "*", "*");
 
-		before("/*", SecurityFilters.csrf);
+		enableCORS("http://localhost:4200", "*", "*");
 
-		get ("/", HomeController.index);
+		// before("/*", SecurityFilters.csrf);
+
+		get("/", HomeController.index);
 
 		path("/apartments", () -> {
 			before("/new", SecurityFilters.authenticated("get"));
-			get   ("/new", ApartmentController.newForm);
+			get("/new", ApartmentController.newForm);
 
 			before("/mine", SecurityFilters.authenticated("get"));
-			get   ("/mine", ApartmentController.forCurrentUser);
+			get("/mine", ApartmentController.forCurrentUser);
 
-			before("",   SecurityFilters.authenticated("post"));
-			post  ("",   ApartmentController.create);
+			before("", SecurityFilters.authenticated("post"));
+			post("", ApartmentController.create);
 
-			get   ("/:id", ApartmentController.details);
+			get("/:id", ApartmentController.details);
 
 			before("/:id/like", SecurityFilters.authenticated("post"));
-			post  ("/:id/like", ApartmentController.like);
+			post("/:id/like", ApartmentController.like);
 
 			before("/:id/activations", SecurityFilters.authenticated("post"));
-			post  ("/:id/activations", ApartmentController.activate);
+			post("/:id/activations", ApartmentController.activate);
 
 			before("/:id/deactivations", SecurityFilters.authenticated("post"));
-			post  ("/:id/deactivations", ApartmentController.deactivate);
+			post("/:id/deactivations", ApartmentController.deactivate);
 		});
 
-
-		get ("/login",          SessionController.newForm);
-		post("/login",          SessionController.create);
-		post("/logout",         SessionController.destroy);
-		get ("/users/new",      UserController.newForm);
-		post("/users",          UserController.create);
-
+		get("/login", SessionController.newForm);
+		post("/login", SessionController.create);
+		post("/logout", SessionController.destroy);
+		get("/users/new", UserController.newForm);
+		post("/users", UserController.create);
 
 		path("/api", () -> {
-			get ("/apartments/:id", ApartmentApiController.details);
-			get ("/apartments", ApartmentApiController.index);
+			get("/apartments/:id", ApartmentApiController.details);
+			get("/apartments", ApartmentApiController.index);
 			post("/apartments", ApartmentApiController.create);
+
+			post("/sessions", SessionApiController.create);
 		});
 	}
 
@@ -127,50 +109,30 @@ public class Application {
 		}
 		return 4567;
 	}
-	
+
 	private static void enableCORS(final String origin, final String methods, final String headers) {
 
-	    options("/*", (request, response) -> {
+		options("/*", (request, response) -> {
 
-	        String accessControlRequestHeaders = request.headers("Access-Control-Request-Headers");
-	        if (accessControlRequestHeaders != null) {
-	            response.header("Access-Control-Allow-Headers", accessControlRequestHeaders);
-	        }
+			String accessControlRequestHeaders = request.headers("Access-Control-Request-Headers");
+			if (accessControlRequestHeaders != null) {
+				response.header("Access-Control-Allow-Headers", accessControlRequestHeaders);
+			}
 
-	        String accessControlRequestMethod = request.headers("Access-Control-Request-Method");
-	        if (accessControlRequestMethod != null) {
-	            response.header("Access-Control-Allow-Methods", accessControlRequestMethod);
-	        }
+			String accessControlRequestMethod = request.headers("Access-Control-Request-Method");
+			if (accessControlRequestMethod != null) {
+				response.header("Access-Control-Allow-Methods", accessControlRequestMethod);
+			}
 
-	        return "OK";
-	    });
+			return "OK";
+		});
 
-	    before((request, response) -> {
-	        response.header("Access-Control-Allow-Origin", origin);
-	        response.header("Access-Control-Request-Method", methods);
-	        response.header("Access-Control-Allow-Headers", headers);
-	        // Note: this may or may not be necessary in your particular application
-//	        response.type("application/json");
-	    });
+		before((request, response) -> {
+			response.header("Access-Control-Allow-Origin", origin);
+			response.header("Access-Control-Request-Method", methods);
+			response.header("Access-Control-Allow-Headers", headers);
+			response.header("Access-Control-Allow-Credentials", "true");
+		});
 	}
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
